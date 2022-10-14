@@ -1,10 +1,7 @@
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/screens/register_screen.dart';
-import 'package:etaka/views/screens/welcome_screen.dart';
+import 'package:sahakari/services/routes/routes.dart';
+import 'package:sahakari/common/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'login_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -14,29 +11,26 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  bool isLoggedIn = false;
+
   @override
   void initState() {
-    // TODO: implement initState
+    print('[loading screen] init state');
     super.initState();
-    navigate();
+    // isLoggedIn = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      navigate();
+    });
   }
 
   Future<void> navigate() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    bool? user_exist = pref.getBool("user_exist");
-    String? token = pref.getString("token");
-    String? phone = pref.getString("phone_number");
-
-    if (token != null && user_exist != null && user_exist) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    } else if (token != null && (user_exist == null || !user_exist)) {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => RegistrationScreen()));
-    } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
-    }
+    
+    print("[navigate invoked]");
+    Future.delayed(Duration.zero, () {
+      context.go('/login');
+      // Navigator.pushNamed(context, Routes.login);
+    });
+    
   }
 
   @override

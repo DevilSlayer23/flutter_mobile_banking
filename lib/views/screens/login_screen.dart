@@ -1,7 +1,9 @@
-import 'package:etaka/services/API/api_helper.dart';
-import 'package:etaka/views/components/bottom_nav.dart';
+import 'package:sahakari/views/components/local_auth.dart';
+import 'package:sahakari/views/components/bottom_nav.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/stylized_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,28 +13,60 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late String pin, phoneNumber;
+  BuildContext get _context => this.context;
+  // late String pin, phoneNumber;
+  bool isClicked = false;
   late bool isLoading, isInit = false;
+  bool isBiometricAvailable = false;
+  bool isAuthenticated = false, showPassword = false;
+  late double _height, _width;
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _pinController = TextEditingController();
 
   @override
   void initState() {
-    // TODO: implement initState
-    // // get();
-    // get().whenComplete(() {
-    //   setState(() {});
-    // });
     super.initState();
+    _phoneController.text = '+977';
     get();
+    biometricAvailable();
+    _height =
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.height *
+            0.4;
+    _width =
+        MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *
+            0.8;
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _pinController.dispose();
+    super.dispose();
   }
 
   Future<void> get() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    // pref.setString("phone", "+881725683936");
-    phoneNumber = pref.getString("phone")!;
     setState(() {
       isLoading = false;
       isInit = true;
     });
+  }
+
+  Future<void> navigateToHome() async {
+    print('[navigate to home invoked]');
+    await Future.delayed(Duration(seconds: 2), () {
+      context.go('/home');
+      // Navigator.pushNamed(context, '/home');
+    });
+  }
+
+  biometricAvailable() async {
+    bool biometricAvailable = await BiometricAuth.biometricAvailable();
+    if (mounted) {
+      setState(() {
+        isBiometricAvailable = biometricAvailable;
+      });
+      print(isBiometricAvailable);
+    }
   }
 
   @override
@@ -68,127 +102,253 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 200,
+                          height: 150,
                         ),
                         Container(
                             padding: EdgeInsets.all(12),
-                            height: 83,
+                            height: 150,
                             child: Image.asset("assets/img/logo_2.png")),
                         Container(
                           color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  "Log In",
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(12, 0, 0, 10),
-                                child: Text(
-                                  "Into Your eTaka Wallet",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(30, 5, 30, 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Phone Number",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600,
-                                          fontSize: 18),
-                                    ),
-                                    TextFormField(
-                                      initialValue: phoneNumber,
-                                      readOnly: true,
-                                      decoration: InputDecoration(
-                                          hintText: "+8801774000000"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // SizedBox(
-                              //   height: 20,
-                              // ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(30, 5, 30, 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Enter Pin",
-                                      style: TextStyle(
-                                          color: Colors.black87, fontSize: 18),
-                                    ),
-                                    TextField(
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          pin = val;
-                                        });
-                                      },
-                                      obscureText: true,
-                                      decoration:
-                                          InputDecoration(hintText: "******"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (isLoading)
-                                Center(
-                                  child: Container(
-                                      padding: EdgeInsets.all(30),
-                                      height: 100,
-                                      width: 100,
-                                      child: CircularProgressIndicator()),
-                                ),
-                              if (!isLoading)
-                                Center(
-                                  child: Container(
-                                    padding: EdgeInsets.all(40),
-                                    height: 100,
-                                    width: 100,
-                                    // child: CircularProgressIndicator(),
+                          child: Form(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    "Log In",
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                              GestureDetector(
-                                onTap: () async {
-                                  // setState(() {
-                                  //   isLoading = true;
-                                  // });
-
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DashboardMain()));
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 80,
-                                  child:
-                                      Image.asset("assets/img/login_btn.png"),
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              )
-                            ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(30, 5, 30, 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Phone Number",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            fontSize: 18),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextFormField(
+                                        // initialValue: "+977 980000000",
+                                        keyboardType: TextInputType.phone,
+                                        controller: _phoneController,
+                                        decoration: InputDecoration(
+                                          hintText: "+977 9812345678",
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.black87,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.black87,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // SizedBox(
+                                //   height: 20,
+                                // ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(30, 5, 30, 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Enter Pin",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            fontSize: 18),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        controller: _pinController,
+                                        obscureText:
+                                            showPassword ? false : true,
+                                        decoration:
+                                            InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Colors.black87,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Colors.black87,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            hintText: "******",
+                                            suffixIcon: IconButton(
+                                                icon: showPassword
+                                                    ? Icon(Icons.visibility_off)
+                                                    : Icon(Icons.visibility),
+                                                onPressed: (() => setState(() {
+                                                      showPassword =
+                                                          !showPassword;
+                                                    })))
+
+                                            // onChanged: ((value) => print(value)),
+                                            ),
+                                      )
+                                    ],
+                                  
+                      
+                                  ),
+                                ),
+                                //add a biometric fingeprint login using local auth
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        //add icon for fingerprint
+                                        Icon(Icons.fingerprint),
+                                        TextButton(
+                                          onPressed: () {
+                                            //add fingerprint login
+                                            if (isBiometricAvailable) {
+                                              try {
+                                                Future.delayed(
+                                                    Duration(
+                                                        milliseconds: 3000),
+                                                    () async {
+                                                  if (await BiometricAuth
+                                                      .authenticate()) {
+                                                    GoRouter.of(context).go(
+                                                      '/home',
+                                                    );
+                                                  }
+                                                });
+                                              } catch (e) {
+                                                CustomStyledToast(
+                                                    StylizedToast(
+                                                        message: e.toString()),
+                                                    context);
+                                              }
+                                            } else {
+                                              CustomStyledToast(
+                                                  StylizedToast(
+                                                      message:
+                                                          "Biometric not available"),
+                                                  context);
+                                            }
+                                          },
+                                          child: Text(
+                                            "Login with Fingerprint",
+                                            style: TextStyle(
+                                                color: Colors.blue.shade900),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+          
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                        setState(() {
+                                          _width = w * 0.6;
+                                          _height = h * 0.4;
+                                        });
+                                        
+                                        if (_phoneController.text.isNotEmpty ||
+                                            _pinController.text.isNotEmpty) {
+                                          if (_phoneController.text.trim() ==
+                                                  Credentials.mobile
+                                                      .toString() &&
+                                              _pinController.text.trim() ==
+                                                  Credentials.pin.toString()) {
+                                            navigateToHome();
+                                          } else {
+                                            CustomStyledToast(
+                                                StylizedToast(
+                                                    message:
+                                                        "Invalid Credentials"),
+                                                context);
+                                            Future.delayed(Duration(seconds: 1),
+                                                () {
+                                              setState(() {
+                                                _width = w * 0.8;
+                                                _height = h * 0.4;
+                                              });
+                                            });
+                                          }
+                                        } else {
+                                          CustomStyledToast(
+                                              StylizedToast(
+                                                  message:
+                                                      "Please fill all the fields"),
+                                              context);
+                                          Future.delayed(Duration(seconds: 1),
+                                              () {
+                                            setState(() {
+                                              _width = w * 0.8;
+                                              _height = h * 0.4;
+                                            });
+                                          });
+                                        }
+                                      },
+                                      child: AnimatedContainer(
+                                        width: _width,
+                                        height: _height,
+                                        decoration: BoxDecoration(
+                                            borderRadius: isClicked
+                                                ? BorderRadius.circular(50)
+                                                : BorderRadius.circular(25)),
+                                        // duration: Duration(seconds: 1),
+                                        duration: Duration(milliseconds: 500),
+                                        child: Image.asset(
+                                            "assets/img/login_btn.png"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -201,3 +361,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+// Widget CustomAnimatedContainer(){}

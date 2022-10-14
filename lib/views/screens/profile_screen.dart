@@ -1,9 +1,9 @@
-import 'package:etaka/models/profile.dart';
-import 'package:etaka/services/API/api_helper.dart';
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
+import 'package:sahakari/models/profile.dart';
+import 'package:sahakari/services/API/api_helper.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'loading_screen.dart';
@@ -16,7 +16,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late Profile profile;
+  Profile profile = Profile(
+    id: 0,
+    firstName: 'Jon',
+    lastName: 'Doe',
+    email: 'jondoe@gmail.com',
+    balance: double.parse('123.90'),
+    mobile: '+977 9812345678',
+    nid: '1234567890',
+    pin: '1234',
+  );
   bool isLoading = true;
   @override
   void initState() {
@@ -25,10 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  Future<void> getdata() async {
-    APIService api = APIService();
-    var data = await api.getProfileData();
-    profile = Profile.fromJson(data);
+  getdata() {
+    
     setState(() {
       isLoading = false;
     });
@@ -61,10 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ? Container(
                       width: 500,
                       decoration: BoxDecoration(
-                        // border: Border.all(
-                        //   color: Colors.black,
-                        //   width: 1,
-                        // ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -74,7 +77,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: CircleAvatar(
                               radius: 35,
                               backgroundImage: NetworkImage(
-                                  'https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png'),
+                                  'https://www.pngfind.com/pngs/m/319-3194386_anime-transparent-bad-boy-bad-boy-anime-boy.png',
+                                  scale: 1),
                             ),
                           ),
                           Column(
@@ -147,17 +151,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     pref.remove("user_exist");
                     pref.remove("token");
                     pref.remove("phone_number");
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => LoadingScreen()));
-                    pushNewScreen(
-                      context,
-                      screen: LoadingScreen(),
-                      withNavBar: true, // OPTIONAL VALUE. True by default.
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
-                    );
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoadingScreen()));
+                    // pushNewScreen(
+                    //   context,
+                    //   screen: LoadingScreen(),
+                    //   withNavBar: true, // OPTIONAL VALUE. True by default.
+                    //   pageTransitionAnimation:
+                    //       PageTransitionAnimation.cupertino,
+                    // );
                   },
                   leading: Icon(
                     Icons.logout,
@@ -168,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Text(
-                "etaka Support",
+                "sahakari Support",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               Card(

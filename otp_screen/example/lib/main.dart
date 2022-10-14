@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Future<String> validateOtp(String otp) async {
     await Future.delayed(Duration(milliseconds: 2000));
     if (otp == "123456") {
-      return null;
+      return "OTP Verified";
     } else {
       return "The entered Otp is wrong";
     }

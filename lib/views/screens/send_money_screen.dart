@@ -1,8 +1,8 @@
-import 'package:etaka/models/profile.dart';
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
-import 'package:etaka/views/components/toast.dart';
-import 'package:etaka/views/screens/send_money_confirmation.dart';
+import 'package:sahakari/models/profile.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
+import 'package:sahakari/views/components/toast.dart';
+import 'package:sahakari/views/screens/send_money_confirmation.dart';
 import 'package:flutter/material.dart';
 
 class SendMoneyScreen extends StatefulWidget {

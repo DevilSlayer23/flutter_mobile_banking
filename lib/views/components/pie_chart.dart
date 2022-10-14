@@ -1,10 +1,10 @@
-import 'package:etaka/models/transaction.dart';
-import 'package:etaka/services/API/api_helper.dart';
+import 'package:sahakari/models/transaction.dart';
+import 'package:sahakari/services/API/api_helper.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'constant.dart';
+import '../../common/constant.dart';
 
 class PieChartSample2 extends StatefulWidget {
   final int send;

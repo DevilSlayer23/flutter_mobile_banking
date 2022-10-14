@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Transaction {
@@ -43,7 +44,7 @@ class _TransactionPageState extends State<TransactionPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).cardColor,
-        brightness: Theme.of(context).brightness,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: Theme.of(context).iconTheme,
         title: Text(
           "Transaction History",

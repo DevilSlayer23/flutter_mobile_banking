@@ -1,9 +1,8 @@
-import 'package:etaka/services/API/api_helper.dart';
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
-import 'package:etaka/views/components/toast.dart';
-import 'package:etaka/views/screens/dashboard_screen.dart';
-import 'package:etaka/views/screens/register_screen.dart';
+import 'package:sahakari/services/API/api_helper.dart';
+import 'package:sahakari/views/components/bottom_nav.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
+import 'package:sahakari/views/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:numeric_keyboard/numeric_keyboard.dart';
 
@@ -135,11 +134,11 @@ class _OTPScreenState extends State<OTPScreen> {
                 // } else {
                 //   error_toast("Invalid OTP");
                 // }
-                //navigate to dashboard screen after clicking on login button
+                //navigate to home screen after clicking on login button
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Dashboard(),
+                    builder: (context) => DashboardMain(),
                   ),
                 );
               },

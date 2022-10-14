@@ -1,5 +1,5 @@
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'mobile_recharge_confirmation.dart';

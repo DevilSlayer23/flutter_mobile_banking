@@ -4,7 +4,7 @@ import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
 import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
 import 'package:flutter_sslcommerz/sslcommerz.dart';
 
-import 'API/api_helper.dart';
+import '../../services/API/api_helper.dart';
 
 class Payment {
   Future<dynamic> gotoSSL(double amount) async {

@@ -1,7 +1,7 @@
-import 'package:etaka/models/offer.dart';
-import 'package:etaka/services/API/api_helper.dart';
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
+import 'package:sahakari/models/offer.dart';
+import 'package:sahakari/services/API/api_helper.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class OfferScreen extends StatefulWidget {

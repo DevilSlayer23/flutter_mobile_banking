@@ -1,8 +1,8 @@
-import 'package:etaka/models/offer.dart';
+import 'package:sahakari/models/offer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'constant.dart';
+import '../../common/constant.dart';
 
 class DashBoardMainItemCard extends StatelessWidget {
   final String asset;

@@ -1,10 +1,13 @@
-import 'package:etaka/models/profile.dart';
-import 'package:etaka/services/API/api_helper.dart';
-import 'package:etaka/views/components/constant.dart';
-import 'package:etaka/views/components/pie_chart.dart';
-import 'package:etaka/views/components/reuseable_widgets.dart';
-import 'package:etaka/views/screens/send_money_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:sahakari/models/profile.dart';
+import 'package:sahakari/services/API/api_helper.dart';
+import 'package:sahakari/views/components/qr_scanner_latest.dart';
+import 'package:sahakari/common/constant.dart';
+import 'package:sahakari/views/components/pie_chart.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
+import 'package:sahakari/views/screens/send_money_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'add _money.dart';
 import 'bill_payment_screen.dart';
@@ -38,6 +41,40 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Warning'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const <Widget>[
+                    Text('Would you like to exit the app?'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        )) ??
+        false;
   }
 
   @override
@@ -81,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      primary: Colors.white,
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: () async {
                       var c = await Navigator.push(
@@ -121,7 +158,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ]),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 50),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 DashBoardMainItemCard(
                   asset: "assets/svg/Sendmoney.svg",
@@ -156,10 +193,11 @@ class _DashboardState extends State<Dashboard> {
                   },
                 ),
                 DashBoardMainItemCard(
-                  asset: "assets/svg/Scan.svg",
-                  title: "PAY NOW",
-                  onTap: () {},
-                ),
+                    asset: "assets/svg/Scan.svg",
+                    title: "PAY NOW",
+                    onTap: () {
+                      context.push('/scan');
+                    }),
               ])
             ],
           ),

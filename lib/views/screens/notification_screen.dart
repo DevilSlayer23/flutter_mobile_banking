@@ -1,4 +1,4 @@
-import 'package:etaka/views/components/reuseable_widgets.dart';
+import 'package:sahakari/views/components/reuseable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatefulWidget {
