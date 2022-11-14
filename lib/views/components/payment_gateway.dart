@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
 import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
 import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
@@ -21,11 +22,11 @@ class Payment {
           tran_id: "ETAKA1234${amount}"),
     );
     SSLCTransactionInfoModel data = await sslcommerz.payNow();
-    print(data.cardNo);
-    print(data.cardIssuer);
-    print(data.amount);
-    print(data.bankTranId);
-    print(data.status);
+    debugPrint(data.cardNo);
+    debugPrint(data.cardIssuer);
+    debugPrint(data.amount);
+    debugPrint(data.bankTranId);
+    debugPrint(data.status);
     if (data.status == "VALID") {
       APIService api = APIService();
       await api.AddMoney(data.cardNo.toString(), data.bankTranId.toString(),

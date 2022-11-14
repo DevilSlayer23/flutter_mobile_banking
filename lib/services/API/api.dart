@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class api {
@@ -32,7 +33,7 @@ class api {
         return false;
       }
     } catch (e) {
-      print(e);
+      debugPrint("$e");
       return false;
     }
   }

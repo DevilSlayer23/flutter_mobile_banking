@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:sahakari/views/components/toast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -21,20 +22,20 @@ class APIService {
       );
       var data = json.decode(response.body);
 
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("token", data['session_token']);
       } else {
-        print(response.body);
+        debugPrint("${response.body}");
         error_toast("Connection error");
         return false;
       }
-      // print(data['session_token']);
+      // debugPrint(data['session_token']);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.body);
+    debugPrint(response.body);
     return response.statusCode == 200;
   }
 
@@ -55,16 +56,16 @@ class APIService {
       );
       var data = json.decode(response.body);
 
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool("valid", true);
         prefs.setString("phone", "+" + phoneNumber);
       }
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.body);
+    debugPrint(response.body);
     return response.statusCode == 200;
   }
 
@@ -79,10 +80,10 @@ class APIService {
         "Authorization": token,
       });
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       prefs.setBool("user_exist", true);
     } else {
@@ -113,11 +114,11 @@ class APIService {
         "nid": nid,
       });
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
     var data = json.decode(response.body);
-    print(response.statusCode);
-    print(data);
+    debugPrint(response.statusCode);
+    debugPrint(data);
     if (response.statusCode != 200) {
       error_toast("Email or Mobile or NID Already Exist");
     } else {
@@ -138,9 +139,9 @@ class APIService {
         "Authorization": token,
       });
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       if (data['pin'] == pin) {
@@ -166,9 +167,9 @@ class APIService {
         "Authorization": token,
       });
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return data;
@@ -194,9 +195,9 @@ class APIService {
         "Authorization": token,
       });
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return response.body;
@@ -205,7 +206,7 @@ class APIService {
   }
 
   Future<dynamic> SendMoney(String receiver, double amount) async {
-    print(amount);
+    debugPrint("$amount");
     String funcURL = 'transaction/sendmoney/';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
@@ -224,10 +225,10 @@ class APIService {
           },
           body: json);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.body);
-    print(response.statusCode);
+    debugPrint(response.body);
+    debugPrint(response.statusCode);
     // var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return true;
@@ -242,7 +243,7 @@ class APIService {
 
   Future<dynamic> AddMoney(String cardNo, String card_holder_name,
       String issuer_bank, double amount) async {
-    print(amount);
+    debugPrint("$amount");
     String funcURL = 'transaction/addmoney/';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
@@ -263,11 +264,11 @@ class APIService {
           },
           body: json);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     var data = jsonDecode(response.body);
-    print(data);
+    debugPrint(data);
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -280,7 +281,7 @@ class APIService {
   }
 
   Future<dynamic> CashOut(String agent, double amount) async {
-    print(amount);
+    debugPrint("$amount");
     String funcURL = 'transaction/cashout/';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
@@ -299,9 +300,9 @@ class APIService {
           },
           body: json);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     // var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return true;
@@ -316,7 +317,7 @@ class APIService {
 
   Future<dynamic> BillPayment(
       int merchant_id, double amount, String reference) async {
-    print(amount);
+    debugPrint("$amount");
     String funcURL = 'transaction/bill-payment/';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? "";
@@ -336,10 +337,10 @@ class APIService {
           },
           body: json);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode);
+    debugPrint(response.body);
     // var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return true;
@@ -356,8 +357,8 @@ class APIService {
     LocationPermission permission = await Geolocator.requestPermission();
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude);
-    print(position.longitude);
+    debugPrint("${position.latitude}");
+    debugPrint("${position.longitude}");
     var uri = Uri.parse(
         "https://barikoi.xyz/v1/api/search/reverse/MTpPVkhCVEZaM09F/geocode?longitude=${position.longitude}&latitude=${position.latitude}");
     var response;
@@ -366,7 +367,7 @@ class APIService {
         uri,
       );
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
     var data = json.decode(response.body);
     return data['place']['city'];
@@ -382,7 +383,7 @@ class APIService {
         uri,
       );
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
     var data = json.decode(response.body);
     return response.body;
@@ -402,9 +403,9 @@ class APIService {
           "Authorization": token,
         },
       );
-      print(response.body);
+      debugPrint(response.body);
     } catch (e) {
-      print(e);
+      debugPrint("$e");
     }
     var data = json.decode(response.body);
     return response.body;

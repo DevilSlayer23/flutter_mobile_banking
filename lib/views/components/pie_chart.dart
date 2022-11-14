@@ -206,7 +206,36 @@ class ExpenseWidget extends StatefulWidget {
 }
 
 class _ExpenseWidgetState extends State<ExpenseWidget> {
-  late List<Transaction> trns;
+  late List<Transaction> trns = [
+    Transaction(
+      transId: "01",
+      transType: "SEND",
+      amount: 1000.00,
+      datetime: DateTime.now(),
+      user: 1,
+    ),
+    Transaction(
+      transId: "02",
+      transType: "CASHOUT",
+      amount: 2000.00,
+      datetime: DateTime.now(),
+      user: 3,
+    ),
+    Transaction(
+      transId: "10",
+      transType: "RECHARGE",
+      amount: 16000.00,
+      datetime: DateTime.now(),
+      user: 1,
+    ),
+    Transaction(
+      transId: "11",
+      transType: "BILLPAY",
+      amount: 1000.00,
+      datetime: DateTime.now(),
+      user: 1,
+    ),
+  ];
   late String start_date, stop_date;
   late double expense = 0, send = 0, recharge = 0, cashout = 0, billpay = 0;
   bool isLoading = true;
@@ -217,10 +246,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
   }
 
   Future<List<Transaction>> getdata() async {
-    APIService api = APIService();
-    var data = await api.gettranHistory();
-    trns = transactionFromJson(data);
-    print(trns.length);
+    // APIService api = APIService();
+    // var data = await api.gettranHistory();
+    // trns = transactionFromJson(data);
+    // debugPrint("${trns.length}");
     for (int i = 0; i < trns.length; i++) {
       if (trns[i].transType == "SEND") {
         send = send + trns[i].amount;
@@ -234,8 +263,8 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
     }
     stop_date = trns.first.datetime.toString();
     start_date = trns.last.datetime.toString();
-    print("======PIE CHART====");
-    print(billpay);
+    debugPrint("======PIE CHART====");
+    debugPrint("$billpay");
     setState(() {
       isLoading = false;
     });
@@ -270,9 +299,9 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
                                 children: [
                                   Text(
                                     "Expenses".toUpperCase(),
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
                                   ),
                                   SizedBox(height: 2),
                                   if (!isLoading)
@@ -286,7 +315,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
                                   SizedBox(height: 10),
                                   if (!isLoading)
                                     Text(
-                                      "BDT ${send + cashout + recharge + billpay}",
+                                      "Rs ${send + cashout + recharge + billpay}",
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontSize: 30,

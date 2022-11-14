@@ -52,6 +52,16 @@ dependencies:
   qr_flutter: ^4.0.0
   qr_code_scanner: ^1.0.1
   flutter_native_splash: ^2.2.11
+  google_fonts: ^3.0.1
+  cached_network_image: ^3.2.1
+  visibility_aware_state: ^1.0.5
+  visibility_detector: ^0.3.3
+  logging: ^1.1.0
+  logger:
+  stylish_bottom_bar: ^0.1.5
+
+  #testing
+  # test: ^1.21.7
 
 dev_dependencies:
   flutter_test:

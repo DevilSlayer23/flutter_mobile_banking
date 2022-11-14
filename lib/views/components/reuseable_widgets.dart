@@ -20,14 +20,28 @@ class DashBoardMainItemCard extends StatelessWidget {
           Stack(
             alignment: AlignmentDirectional.center,
             children: [
-              Card(
-                color: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                elevation: 5,
-                child: SvgPicture.asset(asset),
-              ),
+              Container(
+                  child: Card(
+                    color: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    // elevation: 10,
+
+                    child: SvgPicture.asset(asset),
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        // spreadRadius: 0.5,
+                        blurRadius: 3,
+                        // offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  )),
+              
               Material(
                   color: Colors.transparent,
                   child: InkWell(
@@ -45,9 +59,10 @@ class DashBoardMainItemCard extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(title,
-              style: TextStyle(
-                color: Colors.white,
-              ))
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    // fontWeight: FontWeight.bold,
+                  ))
         ],
       ),
     );
@@ -86,7 +101,12 @@ class PayBillsItem extends StatelessWidget {
             ),
           ),
           SizedBox(height: 2),
-          Text(title)
+          Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+          )
         ],
       )),
     );
@@ -147,17 +167,17 @@ class CustomScaffold extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  alignment: Alignment.topRight,
-                  width: double.infinity,
-                  height: 300,
-                  child: Stack(
-                    children: [
-                      Image.asset("assets/img/vector_1_r.png"),
-                      Image.asset("assets/img/vector_2_r.png"),
-                    ],
-                  ),
-                )
+                // Container(
+                //   alignment: Alignment.topRight,
+                //   width: double.infinity,
+                //   height: 300,
+                //   child: Stack(
+                //     children: [
+                //       Image.asset("assets/img/vector_1_r.png"),
+                //       Image.asset("assets/img/vector_2_r.png"),
+                //     ],
+                //   ),
+                // )
               ],
             ),
             Column(
